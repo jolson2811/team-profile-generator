@@ -197,34 +197,53 @@ function promptIntern() {
     ]);
 }
 
+function addEngineer(res) {
+    let engineer = new Engineer(res.engineerName, res.employeeId, res.email, res.github)
+    employeeList.push(engineer);
+    return;
+}
+
+function addIntern(res) {
+    let intern = new Intern(res.internName, res.employeeId, res.email, res.school)
+    employeeList.push(intern);
+    return;
+}
+
+function addManager(res) {
+    let manager = new Manager(res.teamManagerName, res.employeeId, res.email, res.officeNumber);
+    employeeList.push(manager);
+    return;
+}
+
+function checkResponse(res) {
+    switch (res.employeeType) {
+        case 'Add Engineer':
+            promptEngineer().then(function (resEng) {
+                addEngineer(resEng);
+                checkResponse(resEng);
+            });
+            break;
+        case 'Add Intern':
+            promptIntern().then(function (resInt) {
+                addIntern(resInt);
+                checkResponse(resInt);
+            });
+            break;
+        case 'Finish Building Team':
+            console.log("finished",employeeList);
+            //Call function that loops through employee list and builds out html per employee in employee list
+            break;
+    }
+    return;
+}
+
 // TODO: Create a function to initialize app
 function init() {
     promptManager().then(function (res) {
-        let manager = new Manager(res.teamManagerName, res.employeeId, res.email, res.officeNumber);//create instance of manager for employee list
-        employeeList.push(manager);//add manager to employee list
-        if (res.employeeType == 'Add Engineer') {
-            //call promptEngineer
-            promptEngineer().then(function (res) {
-                //create instance of engineer
-                let engineer = new Engineer(res.engineerName, res.employeeId, res.email, res.github)
-                //push to employee list
-                employeeList.push(engineer);
-                console.log(employeeList);
-            });
-        } else if (res.employeeType == 'Add Intern') {
-            // call promptIntern
-            promptIntern().then(function (res) {
-                //create instance of engineer
-                let intern = new Intern(res.internName, res.employeeId, res.email, res.school)
-                //push to employee list
-                employeeList.push(intern);
-                console.log(employeeList);
-            });
-        } else if (res.employeeType == 'Finish Building Team') {
-            //build html by looping through employee list build card per item in array.
-        }
-
+        addManager(res);
+        checkResponse(res);
     });
+    return;
 }
 
 // Function call to initialize app
