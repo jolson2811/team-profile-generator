@@ -9,10 +9,6 @@
 * HTML
 * CSS
 
-
-## Website
-  Once you have npm/Inquirer set up, you can run command-line from the Develop folder within the README-Generator project folder. From there you will invoke the app from command-line by entering "node index.js".
-
 ### Walkthrough Video
   
 
